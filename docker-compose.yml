@@ -61,6 +61,21 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
+
+  # Quality profiles for Radarr & Sonarr
+  profilarr:
+    image: santiagosayshey/profilarr:latest
+    container_name: profilarr
+    ports:
+      - 6868:6868
+    volumes:
+      - ./profilarr/config:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - UMASK=022
+      - TZ=${TIMEZONE}
+    restart: unless-stopped
   
   # Search & download subtitles 
   bazarr:
@@ -136,6 +151,9 @@ services:
       - UMASK=022
       - TZ=${TIMEZONE}
       - WEBUI_PORT=8081
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:qbittorrent
+      - TP_COMMUNITY_THEME=true
+      - TP_THEME=catppuccin-macchiato
     volumes:
       - ./qbittorrent/config:/config
       - ${DATA_DIR}/torrents:/data/torrents
