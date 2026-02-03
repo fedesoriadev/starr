@@ -64,7 +64,7 @@ services:
 
   # Quality profiles for Radarr & Sonarr
   profilarr:
-    image: santiagosayshey/profilarr:latest
+    image: santiagosayshey/profilarr:beta
     container_name: profilarr
     ports:
       - 6868:6868
@@ -156,6 +156,7 @@ services:
       - TP_THEME=catppuccin-macchiato
     volumes:
       - ./qbittorrent/config:/config
+      - ./qbittorrent/incomplete:/incomplete # Scratch / Cache SSD
       - ${DATA_DIR}/torrents:/data/torrents
     ports:
       - 8081:8081
