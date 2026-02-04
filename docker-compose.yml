@@ -25,7 +25,7 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ={TIMEZONE}
+      - TZ=${TIMEZONE}
     ports:
       - 8191:8191
     restart: unless-stopped
@@ -163,3 +163,40 @@ services:
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
+  
+  # Workflows de automatizaciones  
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n
+    user: "${PUID}:${PGID}"
+    environment:
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_SECURE_COOKIE=false
+      - NODE_ENV=production
+      - WEBHOOK_URL=http://beelink.local:5678/
+      - GENERIC_TIMEZONE=${TIMEZONE}
+      - TZ=${TIMEZONE}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./local-files:/files
+    ports:
+      - 5678:5678
+    restart: always
+
+  # Plex webhooks    
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./tautulli/config:/config
+    ports:
+      - 8181:8181
+    restart: unless-stopped
+
+volumes:
+  n8n_data:

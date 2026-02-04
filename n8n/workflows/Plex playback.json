@@ -1,0 +1,81 @@
+{
+  "name": "Plex playback",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://beelink.local:8081/api/v2/transfer/setSpeedLimitsMode",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "SID=MsMbxikF2d8tVO6JT6wUF147B5RnISvK"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "mode",
+              "value": "={{ $json.body.event === 'play' ? 1 : 0}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        304,
+        0
+      ],
+      "id": "10178888-9182-49f9-8386-335a98d7ef27",
+      "name": "qBittorrent - speed limits ON"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "plex-playback",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6f47e7b3-7f4e-42e2-987d-3948449c0fed",
+      "name": "Webhook from Tautilli",
+      "webhookId": "0e092836-b194-47a3-bbcf-0d54f355fd00"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook from Tautilli": {
+      "main": [
+        [
+          {
+            "node": "qBittorrent - speed limits ON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "04fd338d-da36-4729-bf98-a58e66d5f76f",
+  "meta": {
+    "instanceId": "95caad0177b54c66ed9941c06def336369526c6377de07b1bb18bffd738aecef"
+  },
+  "id": "aTEnMaKkI2oAWOUTy7oAT",
+  "tags": []
+}
