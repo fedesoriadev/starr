@@ -4,16 +4,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://beelink.local:8081/api/v2/transfer/setSpeedLimitsMode",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Cookie",
-              "value": "SID=MsMbxikF2d8tVO6JT6wUF147B5RnISvK"
-            }
-          ]
-        },
+        "url": "http://qbittorrent:8081/api/v2/transfer/setSpeedLimitsMode",
         "sendBody": true,
         "contentType": "multipart-form-data",
         "bodyParameters": {
