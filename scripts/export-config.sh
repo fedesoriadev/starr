@@ -28,7 +28,7 @@ copy_redacted seerr/config/settings.json "$out/seerr/settings.json"
 cp jellyfin/config/*.xml "$out/jellyfin/" 2>/dev/null || true
 copy_redacted tautulli/config/config.ini "$out/tautulli/config.ini"
 copy_redacted qbittorrent/config/qBittorrent/qBittorrent.conf "$out/qbittorrent/qBittorrent.conf"
-cp bazarr/config/config.ini "$out/bazarr/config.ini" 2>/dev/null || true
+copy_redacted bazarr/config/config/config.yaml "$out/bazarr/config.yaml"
 
 cat > "$out/README.md" <<'EOF'
 # Versioned application configuration
