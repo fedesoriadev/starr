@@ -62,21 +62,6 @@ services:
       - 7878:7878
     restart: unless-stopped
 
-  # Quality profiles for Radarr & Sonarr
-  profilarr:
-    image: santiagosayshey/profilarr:beta
-    container_name: profilarr
-    ports:
-      - 6868:6868
-    volumes:
-      - ./profilarr/config:/config
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - UMASK=022
-      - TZ=${TIMEZONE}
-    restart: unless-stopped
-  
   # Search & download subtitles 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -126,19 +111,27 @@ services:
       - ${DATA_DIR}/media:/data/media
     restart: unless-stopped
 
-  # Overseer fork for Jellyfin
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
+  # Seerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
+    container_name: seerr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - UMASK=022
+      - LOG_LEVEL=debug
       - TZ=${TIMEZONE}
-    volumes:
-      - ./jellyseerr/config:/app/config
     ports:
-      - 5056:5055
+      - 5055:5055
+    volumes:
+      - ./seerr/config:/app/config
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
     restart: unless-stopped
 
   # Torrent / Downloader client  
