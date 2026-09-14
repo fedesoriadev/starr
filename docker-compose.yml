@@ -215,5 +215,19 @@ services:
       - 19999:19999
     restart: unless-stopped
 
+  # Simple host and Docker overview for quick troubleshooting
+  glances:
+    image: nicolargo/glances:latest-full
+    container_name: glances
+    pid: host
+    environment:
+      - GLANCES_OPT=-w
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/os-release:/etc/os-release:ro
+    ports:
+      - 61208:61208
+    restart: unless-stopped
+
 volumes:
   n8n_data:
